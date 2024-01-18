@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
-public class InventorySlot : MonoBehaviour
+public class InventorySlot
 {
     [SerializeField] private InventoryItemData itemData;
     [SerializeField] private int stackSize;
@@ -36,7 +36,8 @@ public class InventorySlot : MonoBehaviour
     public bool RoomLeftInStack(int amountToAdd)
     {
         if (stackSize + amountToAdd <= itemData.MaxStackSize) return true;
-        else return false;
+        else 
+            return false;
     }
 
     public void AddToStack(int amount)
