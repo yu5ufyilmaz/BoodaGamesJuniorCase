@@ -1,18 +1,64 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using UnityEditor;
 
-public class DynamicInventoryDisplay : MonoBehaviour
+public class DynamicInventoryDisplay : InventoryDisplay
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] protected InventorySlot_UI slotPrefab;
+    
+    public override void AssignSlot(InventorySystem invToDisplay)
     {
-        
+        ClearSlots();
+
+        slotDictionary = new Dictionary<InventorySlot_UI, InventorySlot>();
+        if (invToDisplay == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < invToDisplay.InventorySize; i++)
+        {
+            var uiSlot = Instantiate(slotPrefab, transform);
+            slotDictionary.Add(uiSlot,invToDisplay.InventorySlots[i]);
+            uiSlot.Init(invToDisplay.InventorySlots[i]);
+            uiSlot.UpdateUISlot();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void RefreshDynamicInventory(InventorySystem invToDisplay)
     {
-        
+        ClearSlots();
+        inventorySystem = invToDisplay;
+        if (inventorySystem != null)
+        {
+            inventorySystem.OnInventorySlotChanged += UpdateSlot;
+        }
+
+       
+        AssignSlot(invToDisplay);
+    }
+
+    private void ClearSlots()
+    {
+        foreach (var item in transform.Cast<Transform>())
+        {
+            Destroy(item.gameObject);
+        }
+
+        if (slotDictionary != null)
+        {
+            slotDictionary.Clear();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (inventorySystem != null)
+        {
+            inventorySystem.OnInventorySlotChanged -= UpdateSlot;
+        }
     }
 }

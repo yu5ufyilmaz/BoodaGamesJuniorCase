@@ -3,18 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class InventoryHolder : MonoBehaviour
 {
   [SerializeField] private int inventorySize;
-  [SerializeField] protected InventorySystem inventorySystem;
+  [FormerlySerializedAs("inventorySystem")] [SerializeField] protected InventorySystem primaryInventorySystem;
 
-  public InventorySystem InventorySystem => inventorySystem;
+  public InventorySystem PrimaryInventorySystem => primaryInventorySystem;
   public static UnityAction<InventorySystem> OnDynamicInventoryDisplayRequested;
 
-  private void Awake()
+  protected virtual void Awake()
   {
-    inventorySystem = new InventorySystem(inventorySize);
+    primaryInventorySystem = new InventorySystem(inventorySize);
   }
 }
