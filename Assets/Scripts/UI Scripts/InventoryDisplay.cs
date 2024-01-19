@@ -33,11 +33,24 @@ public abstract class InventoryDisplay : MonoBehaviour
 
   public void SlotClicked(InventorySlot_UI clickedUISlot)
   {
+    bool isAltPressed = Keyboard.current.leftAltKey.isPressed;
     if (clickedUISlot.AssignedInventorySlot.ItemData != null && mouseInventoryItem.AssignedInventorySlot.ItemData == null)
     {
-      mouseInventoryItem.UpdateMouseSlot(clickedUISlot.AssignedInventorySlot);
-      clickedUISlot.ClearSlot();
-      return;
+      if (isAltPressed && clickedUISlot.AssignedInventorySlot.SplitStack(out InventorySlot halfStackSlot))//Ayırmak için
+      {
+        mouseInventoryItem.UpdateMouseSlot(halfStackSlot);
+        clickedUISlot.UpdateUISlot();
+        return;
+      }
+      else
+      {
+        mouseInventoryItem.UpdateMouseSlot(clickedUISlot.AssignedInventorySlot);
+        clickedUISlot.ClearSlot();
+        return; 
+      }
+      
+      
+     
     }
 
     if (clickedUISlot.AssignedInventorySlot.ItemData == null && mouseInventoryItem.AssignedInventorySlot.ItemData != null)
@@ -45,16 +58,48 @@ public abstract class InventoryDisplay : MonoBehaviour
       clickedUISlot.AssignedInventorySlot.AssignItem(mouseInventoryItem.AssignedInventorySlot);
       clickedUISlot.UpdateUISlot();
       
-      mouseInventoryItem.ClearSlot();  
+      mouseInventoryItem.ClearSlot(); 
     }
 
 
     if (clickedUISlot.AssignedInventorySlot.ItemData != null &&
         mouseInventoryItem.AssignedInventorySlot.ItemData != null)
     {
-      if (clickedUISlot.AssignedInventorySlot.ItemData != mouseInventoryItem.AssignedInventorySlot.ItemData)
+      bool isSameItem = clickedUISlot.AssignedInventorySlot.ItemData ==
+                        mouseInventoryItem.AssignedInventorySlot.ItemData;
+      if ( isSameItem && clickedUISlot.AssignedInventorySlot.EnoughRoomLeftInStack(mouseInventoryItem.AssignedInventorySlot.StackSize))
+      {
+        clickedUISlot.AssignedInventorySlot.AssignItem(mouseInventoryItem.AssignedInventorySlot);
+        clickedUISlot.UpdateUISlot();
+        
+        mouseInventoryItem.ClearSlot();
+        return;
+      }
+      else if (isSameItem &&
+               !clickedUISlot.AssignedInventorySlot.EnoughRoomLeftInStack(mouseInventoryItem.AssignedInventorySlot.StackSize,
+                 out int leftInStack))
+      {
+        if (leftInStack < 1) // Stack doluysa itemları değiştir.
+        {
+          SwapSlots(clickedUISlot);
+        }
+        else //Slot full değilse ona göre al
+        {
+          int remainingOnMouse = mouseInventoryItem.AssignedInventorySlot.StackSize - leftInStack;
+          clickedUISlot.AssignedInventorySlot.AddToStack(leftInStack);
+          clickedUISlot.UpdateUISlot();
+
+          var newItem = new InventorySlot(mouseInventoryItem.AssignedInventorySlot.ItemData, remainingOnMouse);
+          mouseInventoryItem.ClearSlot();
+          mouseInventoryItem.UpdateMouseSlot(newItem);
+          return;
+        }
+      }
+
+      else if (!isSameItem)
       {
         SwapSlots(clickedUISlot);
+        return;
       }
     }  
   }

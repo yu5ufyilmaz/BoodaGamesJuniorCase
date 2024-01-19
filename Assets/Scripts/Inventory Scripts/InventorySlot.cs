@@ -4,8 +4,8 @@ using UnityEngine;
 [System.Serializable]
 public class InventorySlot
 {
-    [SerializeField] private InventoryItemData itemData;
-    [SerializeField] private int stackSize;
+    [SerializeField] private InventoryItemData itemData; // Datayı çek
+    [SerializeField] private int stackSize; // Şu andaki stack boyutu
 
     public InventoryItemData ItemData => itemData;
     public int StackSize => stackSize;
@@ -46,15 +46,15 @@ public class InventorySlot
         itemData = data;
         stackSize = amount;
     }
-    public bool RoomLeftInStack(int amountToAdd, out int amountRemaining)
+    public bool EnoughRoomLeftInStack(int amountToAdd, out int amountRemaining)
     {
         amountRemaining = ItemData.MaxStackSize - stackSize;
-        return RoomLeftInStack(amountToAdd);
+        return EnoughRoomLeftInStack(amountToAdd);
     }
 
-    public bool RoomLeftInStack(int amountToAdd)
+    public bool EnoughRoomLeftInStack(int amountToAdd)
     {
-        if (stackSize + amountToAdd <= itemData.MaxStackSize) return true;
+        if (itemData == null || itemData != null && stackSize + amountToAdd <= itemData.MaxStackSize) return true;
         else 
             return false;
     }
@@ -67,5 +67,20 @@ public class InventorySlot
     public void RemoveFromStack(int amount)
     {
         stackSize -= amount;
+    }
+
+    public bool SplitStack(out InventorySlot splitStack)
+    {
+        if (stackSize<= 1)
+        {
+            splitStack = null;
+            return false;
+        }
+
+        int halfStack = Mathf.RoundToInt(stackSize / 2);
+            RemoveFromStack(halfStack);
+
+            splitStack = new InventorySlot(itemData, halfStack);
+            return true;
     }
 }
