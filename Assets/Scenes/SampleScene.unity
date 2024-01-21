@@ -567,6 +567,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &149919303
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -867,6 +871,7 @@ GameObject:
   - component: {fileID: 326125319}
   - component: {fileID: 326125318}
   - component: {fileID: 326125322}
+  - component: {fileID: 326125323}
   m_Layer: 6
   m_Name: BigChest
   m_TagString: Untagged
@@ -975,6 +980,19 @@ MonoBehaviour:
   inventorySize: 20
   primaryInventorySystem:
     inventorySlots: []
+--- !u!114 &326125323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326125317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32e322059a2abe459566964121dce0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: fd60adc1-9d60-4994-90c9-757423a2ef13
 --- !u!1 &365385232
 GameObject:
   m_ObjectHideFlags: 0
@@ -1056,6 +1074,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &415843573
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1209,6 +1231,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 8f5058400f18f6e46a6602c933ab954c, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &504736455
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1610,6 +1636,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &668006564
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1747,6 +1777,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &703318204
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2134,6 +2168,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &834924358
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2422,6 +2460,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 8f5058400f18f6e46a6602c933ab954c, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &928089865
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2559,6 +2601,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &987175785
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2773,6 +2819,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &1101318339
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3746,6 +3796,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &1468955834
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3937,6 +3991,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &1594086232
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4422,6 +4480,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &1842782714
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4923,6 +4985,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &2027687847
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5465,6 +5531,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PickUpRadius: 1
   ItemData: {fileID: 11400000, guid: 03119d14bd463ec47a42d60dd845eb56, type: 2}
+  itemSaveData:
+    ItemData: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!135 &2134258172
 SphereCollider:
   m_ObjectHideFlags: 0

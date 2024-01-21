@@ -8,26 +8,31 @@ using UnityEngine.Events;
 
 public class PlayerInventoryHolder : InventoryHolder
 {
-    [SerializeField] protected int secondaryInventorySize;
-    [SerializeField] protected InventorySystem secondaryInventorySystem;
 
-    public InventorySystem SecondatyInventorySystem => secondaryInventorySystem;
-    
-    public static UnityAction<InventorySystem> OnPlayerBackpackDisplayRequested;
+   
+    public static UnityAction OnPlayerInventoryChanged;
+
+    public static UnityAction<InventorySystem, int> OnPlayerInventoryDisplayRequested;
 
 
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
-
-        secondaryInventorySystem = new InventorySystem(secondaryInventorySize);
+        SaveGameManager.data.playerInventory = new InventorySaveData(primaryInventorySystem);
     }
 
+    protected override void LoadInventory(SaveData data)
+    {
+        if (data.playerInventory.InvSystem != null)
+        {
+            this.primaryInventorySystem = data.playerInventory.InvSystem;
+            OnPlayerInventoryChanged?.Invoke();
+        }
+    }
     private void Update()
     {
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
-            OnPlayerBackpackDisplayRequested?.Invoke(secondaryInventorySystem);
+            OnPlayerInventoryDisplayRequested?.Invoke(primaryInventorySystem,offset);
         }
     }
 
@@ -37,11 +42,7 @@ public class PlayerInventoryHolder : InventoryHolder
         {
             return true;
         }
-        else if (secondaryInventorySystem.AddToInventory(data,amount))
-        {
-            return true;
-        }
-
+        
         return false;
     }
 }
