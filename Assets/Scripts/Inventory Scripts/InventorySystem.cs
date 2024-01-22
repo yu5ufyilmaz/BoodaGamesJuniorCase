@@ -8,6 +8,9 @@ using System.Linq;
 public class InventorySystem
 {
    [SerializeField] private List<InventorySlot> inventorySlots;
+    [SerializeField] private int _gold;
+
+    public int Gold => _gold;
    public List<InventorySlot> InventorySlots => inventorySlots;
    public int InventorySize => InventorySlots.Count;
 
@@ -15,13 +18,25 @@ public class InventorySystem
 
    public InventorySystem(int size)
    {
-      inventorySlots = new List<InventorySlot>(size);
-
-      for (int i = 0; i < size; i++)
-      {
-         inventorySlots.Add(new InventorySlot());
-      }
+        _gold = 0;
+     CreateInventory(size);
    }
+
+    public InventorySystem(int size,int gold)
+    {
+        _gold = gold;
+        CreateInventory(size);
+    }
+
+    private void CreateInventory(int size)
+    {
+        inventorySlots = new List<InventorySlot>(size);
+
+        for (int i = 0; i < size; i++)
+        {
+            inventorySlots.Add(new InventorySlot());
+        }
+    }
 
    public bool AddToInventory(InventoryItemData itemToAdd, int amountToAdd)
    {
