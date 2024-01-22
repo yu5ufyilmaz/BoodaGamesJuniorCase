@@ -30,6 +30,8 @@ public class UniqueID : MonoBehaviour
          idDatabase.Remove(_id);
       }
    }
+   
+   [ContextMenu("Generate ID" )]
 
    private void Generate()
    {
