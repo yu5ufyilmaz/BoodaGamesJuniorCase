@@ -78,4 +78,33 @@ public class InventorySystem
       freeSlot = InventorySlots.FirstOrDefault(i => i.ItemData == null);
       return freeSlot == null ? false : true;
    }
+
+   public bool CheckInventoryRemaining(Dictionary<InventoryItemData, int> shoppingCart)
+   {
+      var clonedSystem = new InventorySystem(this.InventorySize);
+
+      for (int i = 0; i < InventorySize; i++)
+      {
+         clonedSystem.inventorySlots[i].AssignItem(this.inventorySlots[i].ItemData, this.InventorySlots[i].StackSize);
+
+         foreach (var kvp in shoppingCart)
+         {
+            for (int j = 0; j < kvp.Value; j++)
+            {
+               if (!clonedSystem.AddToInventory(kvp.Key,1))
+               {
+                  return false;
+               }
+            }
+         }
+
+         
+      }
+      return true;
+   }
+
+   public void SpendGold(int basketTotal)
+   {
+      _gold -= basketTotal;
+   }
 }

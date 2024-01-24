@@ -1940,6 +1940,7 @@ MonoBehaviour:
     inventorySlots: []
     _gold: 0
   offset: 10
+  _gold: 0
 --- !u!114 &326125323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4480,7 +4481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d32e322059a2abe459566964121dce0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: bf46010c-07ef-46a8-8893-5180223da707
+  _id: 32e73e62-0177-404d-833f-e41546bf0f00
 --- !u!224 &945920040 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4004385014286825141, guid: fdcc6a185efb95040ad87225798266b5, type: 3}
@@ -5690,6 +5691,7 @@ MonoBehaviour:
     inventorySlots: []
     _gold: 0
   offset: 10
+  _gold: 0
 --- !u!114 &1230920293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11905,8 +11907,9 @@ MonoBehaviour:
   inventorySize: 100
   primaryInventorySystem:
     inventorySlots: []
-    _gold: 0
+    _gold: 500
   offset: 10
+  _gold: 1000
 --- !u!4 &7369058997278637061
 Transform:
   m_ObjectHideFlags: 0

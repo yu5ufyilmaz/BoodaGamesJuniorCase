@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,5 +65,20 @@ public class ShopSystem
    {
       shopSlot = _shopInventory.Find(i => i.ItemData == itemToAdd);
       return shopSlot != null;
+   }
+
+   public void PurchaseItem(InventoryItemData data, int amount)
+   {
+      if (!ContainsItem(data,out ShopSlot slot))
+      {
+         return;
+      }
+
+      slot.RemoveFromStack(amount);
+   }
+
+   public void GainGold(int basketTotal)
+   {
+      _availableGold += basketTotal;
    }
 }

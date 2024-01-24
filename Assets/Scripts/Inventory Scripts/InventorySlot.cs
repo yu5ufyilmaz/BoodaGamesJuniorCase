@@ -39,10 +39,7 @@ public class InventorySlot : ItemSlot
     }
 
 
-    public void RemoveFromStack(int amount)
-    {
-        stackSize -= amount;
-    }
+    
 
     public bool SplitStack(out InventorySlot splitStack)
     {

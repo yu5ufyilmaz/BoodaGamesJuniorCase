@@ -54,6 +54,10 @@ public abstract class ItemSlot : ISerializationCallbackReceiver
     {
         stackSize += amount;
     }
+    public void RemoveFromStack(int amount)
+    {
+        stackSize -= amount;
+    }
 
     public void OnBeforeSerialize()
     {

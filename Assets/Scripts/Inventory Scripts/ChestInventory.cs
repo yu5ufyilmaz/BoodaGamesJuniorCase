@@ -8,7 +8,6 @@ using UnityEngine.Events;
 public class ChestInventory : InventoryHolder, IInteractable
 {
     public UnityAction<IInteractable> OnInteractionComplete { get; set; }
-
     
     private void Start()
     {
