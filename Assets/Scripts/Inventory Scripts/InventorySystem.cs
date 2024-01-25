@@ -86,19 +86,18 @@ public class InventorySystem
       for (int i = 0; i < InventorySize; i++)
       {
          clonedSystem.inventorySlots[i].AssignItem(this.inventorySlots[i].ItemData, this.InventorySlots[i].StackSize);
-
-         foreach (var kvp in shoppingCart)
+         
+      }
+      
+      foreach (var kvp in shoppingCart)
+      {
+         for (int j = 0; j < kvp.Value; j++)
          {
-            for (int j = 0; j < kvp.Value; j++)
+            if (!clonedSystem.AddToInventory(kvp.Key,1))
             {
-               if (!clonedSystem.AddToInventory(kvp.Key,1))
-               {
-                  return false;
-               }
+               return false;
             }
          }
-
-         
       }
       return true;
    }
