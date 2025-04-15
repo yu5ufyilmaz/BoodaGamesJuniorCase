@@ -25,14 +25,19 @@ public class StaticInventoryDisplay : InventoryDisplay
         if (inventoryHolder != null)
         {
             inventorySystem = inventoryHolder.PrimaryInventorySystem;
-            inventorySystem.OnInventorySlotChanged += UpdateSlot;
+            if (inventorySystem != null)
+            {
+                inventorySystem.OnInventorySlotChanged += UpdateSlot;
+                AssignSlot(inventorySystem, 0);
+            }
         }
         else
         {
             Debug.LogWarning($"No inventory assigned to {this.gameObject}");
+            // Burada erken dönüş ekliyoruz ki hata olmasın
+            return;
         }
-        
-        AssignSlot(inventorySystem,0);    }
+    }
 
     protected override void Start()
     {
@@ -42,10 +47,17 @@ public class StaticInventoryDisplay : InventoryDisplay
     }
     public override void AssignSlot(InventorySystem invToDisplay, int offset)
     {
+        // inventorySystem null olabilir, kontrol ekleyelim
+        if (inventorySystem == null) return;
+    
         slotDictionary = new Dictionary<InventorySlot_UI, InventorySlot>();
-        for (int i = 0; i < inventoryHolder.Offset; i++)
+    
+        // slots veya inventorySystem.InventorySlots null olabilir, kontrol ekleyelim
+        if (slots == null || inventorySystem.InventorySlots == null) return;
+    
+        for (int i = 0; i < inventoryHolder.Offset && i < slots.Length && i < inventorySystem.InventorySlots.Count; i++)
         {
-            slotDictionary.Add(slots[i],inventorySystem.InventorySlots[i]);
+            slotDictionary.Add(slots[i], inventorySystem.InventorySlots[i]);
             slots[i].Init(inventorySystem.InventorySlots[i]);
         }
     }

@@ -39,6 +39,9 @@ public class InventorySlot_UI : MonoBehaviour
       if (slot.StackSize > 1) itemCount.text = slot.StackSize.ToString();
       else 
         itemCount.text = "";
+            
+      // Debug ekleme
+      Debug.Log($"UI Slot güncellendi: {slot.ItemData.DisplayName}");
     }
     else
     {

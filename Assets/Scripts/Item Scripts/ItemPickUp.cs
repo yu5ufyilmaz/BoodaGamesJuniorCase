@@ -55,10 +55,11 @@ public class ItemPickUp : MonoBehaviour
 
         if (!inventory)
         {
+            Debug.LogWarning($"No PlayerInventoryHolder component found on {other.gameObject.name}");
             return;
         }
 
-        if (inventory.AddToInventory(ItemData,1))
+        if (inventory.AddToInventory(ItemData, 1))
         {
             SaveGameManager.data.collectedItems.Add(id);
             Destroy(this.gameObject);

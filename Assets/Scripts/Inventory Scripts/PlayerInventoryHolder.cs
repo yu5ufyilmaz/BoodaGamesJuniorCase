@@ -37,11 +37,19 @@ public class PlayerInventoryHolder : InventoryHolder
 
     public bool AddToInventory(InventoryItemData data, int amount)
     {
-        if (primaryInventorySystem.AddToInventory(data,amount))
+        if (primaryInventorySystem.AddToInventory(data, amount))
         {
+            try
+            {
+                OnPlayerInventoryChanged?.Invoke();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error updating inventory UI: {e.Message}");
+            }
             return true;
         }
-        
+    
         return false;
     }
 }

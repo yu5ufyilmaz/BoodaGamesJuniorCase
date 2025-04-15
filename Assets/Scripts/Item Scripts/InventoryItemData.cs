@@ -12,4 +12,8 @@ public class InventoryItemData : ScriptableObject
   public Sprite Icon;
   public int MaxStackSize;
   public int GoldValue;
+  
+  // Yeni eklenen alanlar
+  public bool IsCorrectItem = false; // Item doğru mu yanlış mı
+  public int PointValue = 10; // Bu itemın kaç puan değerinde olduğu
 }

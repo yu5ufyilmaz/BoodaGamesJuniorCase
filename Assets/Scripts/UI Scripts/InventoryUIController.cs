@@ -49,9 +49,17 @@ public class InventoryUIController : MonoBehaviour
       inventoryPanel.gameObject.SetActive(true);
       inventoryPanel.RefreshDynamicInventory(invToDisplay,offset);
    }
-   void  DisplayPlayerInventory(InventorySystem invToDisplay,int offset)
+   private void DisplayPlayerInventory(InventorySystem invToDisplay, int offset)
    {
       playerBackpackPanel.gameObject.SetActive(true);
-      playerBackpackPanel.RefreshDynamicInventory(invToDisplay,offset);
+      playerBackpackPanel.RefreshDynamicInventory(invToDisplay, offset);
+    
+      // Debug ekleyelim
+      Debug.Log($"Oyuncu envanteri gösteriliyor. Item sayısı: {invToDisplay.InventorySize}");
+      foreach (var slot in invToDisplay.InventorySlots)
+      {
+         if (slot.ItemData != null)
+            Debug.Log($"Item: {slot.ItemData.DisplayName}, Adet: {slot.StackSize}");
+      }
    }
 }
