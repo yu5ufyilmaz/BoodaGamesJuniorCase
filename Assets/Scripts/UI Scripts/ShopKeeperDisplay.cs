@@ -127,17 +127,23 @@ public class ShopKeeperDisplay : MonoBehaviour
 
     private IEnumerator LoadNextScene()
     {
+        // Show a loading message or transition effect
+        if (_basketTotalText != null)
+        {
+            _basketTotalText.text = "Preparing quiz...";
+        }
+    
         // Geçiş efekti veya bekleme süresi
         yield return new WaitForSeconds(1.0f);
-        
+    
         // Skoru PlayerPrefs'e kaydedelim böylece sonraki sahnede erişebiliriz
         PlayerPrefs.SetInt("GameScore", ScoreManager.Instance.CurrentScore);
         PlayerPrefs.Save();
-        
+    
         Debug.Log($"Saving score {ScoreManager.Instance.CurrentScore} to PlayerPrefs");
-        
-        // Sonraki sahneye geçiş
-        SceneManager.LoadScene(nextSceneName);
+    
+        // Make sure TestScene is added to your Build Settings!
+        SceneManager.LoadScene("TestScene");
     }
 
     private void ClearSlots()
