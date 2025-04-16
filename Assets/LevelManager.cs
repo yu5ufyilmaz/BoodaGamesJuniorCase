@@ -1,23 +1,18 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private int targetScore = 100;
     
-    public UnityAction OnLevelCompleted;
-    
-    private void Update()
+    public void LoadLevel(string levelName)
     {
-        CheckLevelCompletion();
+        SceneManager.LoadScene(levelName);
     }
     
-    private void CheckLevelCompletion()
+    public void ExitGame()
     {
-        if (ScoreManager.Instance.CurrentScore >= targetScore)
-        {
-            Debug.Log("Seviye tamamlandı!");
-            OnLevelCompleted?.Invoke();
-        }
+        Application.Quit();
+        Debug.Log("Game is exiting...");
     }
 }

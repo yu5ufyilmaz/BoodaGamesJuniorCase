@@ -14,6 +14,6 @@ public class InventoryItemData : ScriptableObject
   public int GoldValue;
   
   // Yeni eklenen alanlar
-  public bool IsCorrectItem = false; // Item doğru mu yanlış mı
-  public int PointValue = 10; // Bu itemın kaç puan değerinde olduğu
+  public bool IsCorrectItem = false; 
+  public int PointValue = 10; 
 }

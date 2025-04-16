@@ -9,11 +9,16 @@ public class ItemPickUp : MonoBehaviour
 {
     public float PickUpRadius = 1f;
     public InventoryItemData ItemData;
+    
+    [Header("Feedback")]
+    [SerializeField] private AudioSource pickupSound;
+    [SerializeField] private GameObject pickupEffect;
 
     private SphereCollider myCollider;
     [SerializeField] private ItemPickUpSaveData itemSaveData;
 
     private string id;
+    private GameManager gameManager;
 
     private void Awake()
     {
@@ -24,6 +29,9 @@ public class ItemPickUp : MonoBehaviour
         myCollider = GetComponent<SphereCollider>();
         myCollider.isTrigger = true;
         myCollider.radius = PickUpRadius;
+        
+        // Find the GameManager
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     private void Start()
@@ -61,6 +69,24 @@ public class ItemPickUp : MonoBehaviour
 
         if (inventory.AddToInventory(ItemData, 1))
         {
+            // Add score based on item's value when picked up
+            if (gameManager != null)
+            {
+                // We could add immediate feedback here, but final scoring happens at the end
+                // If you want visual feedback, you can show a floating text
+                
+                // Play pickup effects if available
+                if (pickupSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(pickupSound.clip, transform.position);
+                }
+                
+                if (pickupEffect != null)
+                {
+                    Instantiate(pickupEffect, transform.position, Quaternion.identity);
+                }
+            }
+            
             SaveGameManager.data.collectedItems.Add(id);
             Destroy(this.gameObject);
         }
