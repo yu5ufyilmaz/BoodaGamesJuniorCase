@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ShopKeeperDisplay : MonoBehaviour
 {
@@ -14,17 +15,19 @@ public class ShopKeeperDisplay : MonoBehaviour
    [SerializeField] private Button _buyTab;
    [SerializeField] private Button _sellTab;
 
-   [Header("Shhopping Cart")] 
-  [SerializeField] private TextMeshProUGUI _basketTotalText;
-
+   [Header("Shopping Cart")] 
+   [SerializeField] private TextMeshProUGUI _basketTotalText;
    [SerializeField] private TextMeshProUGUI _playerGoldText;
    [SerializeField] private TextMeshProUGUI _shopGoldText;
    [SerializeField] private Button _buyButton;
    [SerializeField] private TextMeshProUGUI _buyButtonText;
+   
+   // Sonraki sahneye geçiş için
+   [Header("Navigation")]
+   [SerializeField] private string nextSceneName = "NextScene";
 
    [Header("Item Preview Section")] 
-  [SerializeField] private Image _itemPreviewSprite;
-
+   [SerializeField] private Image _itemPreviewSprite;
    [SerializeField] private TextMeshProUGUI _itemPreviewName;
    [SerializeField] private TextMeshProUGUI _itemPreviewDescription;
 
@@ -46,6 +49,19 @@ public class ShopKeeperDisplay : MonoBehaviour
         _shopSystem = shopSystem;
         _playerInventoryHolder = playerInventoryHolder;
 
+        // Shop'ta satma özelliğini devre dışı bırakalım, sadece satın alma olsun
+        if (_sellTab != null)
+            _sellTab.gameObject.SetActive(false);
+            
+        if (_buyTab != null)
+            _buyTab.gameObject.SetActive(false);
+            
+        _isSelling = false;
+
+        // Sadece BuySell butonu aktif olacak
+        _buyButton.gameObject.SetActive(true);
+        _buyButtonText.text = "Buy Items";
+        
         RefreshDisplay();
     }
 
@@ -53,81 +69,76 @@ public class ShopKeeperDisplay : MonoBehaviour
     {
         if (_buyButton != null)
         {
-            _buyButtonText.text = _isSelling? "Sell Items" : "Buy Items";
+            _buyButtonText.text = "Buy Items";
             _buyButton.onClick.RemoveAllListeners();
-            if (_isSelling)
-            {
-                _buyButton.onClick.AddListener(SellItems);
-            }
-            else
-            {
-                _buyButton.onClick.AddListener(BuyItems);
-            }
+            _buyButton.onClick.AddListener(BuyItems);
+            
+            // Buton her zaman aktif kalacak
+            _buyButton.gameObject.SetActive(true);
         }
         
         ClearSlots();
         ClearItemPreview();
 
         _basketTotalText.enabled = false;
-        _buyButton.gameObject.SetActive(false);
         _basketTotal = 0;
         _playerGoldText.text = $"Player Gold: {_playerInventoryHolder.PrimaryInventorySystem.Gold}";
         _shopGoldText.text = $"Shop Gold: {_shopSystem.AvailableGold}";
 
-       if (_isSelling) DisplayPlayerInventory();
-       else 
-           DisplayShopInventory();
-       
+        // Shop envanteri yerine, oyuncunun topladığı öğeleri gösteriyoruz
+        DisplayPlayerCollectedItems();
     }
 
     private void BuyItems()
     {
         if (_playerInventoryHolder.PrimaryInventorySystem.Gold < _basketTotal)
         {
+            Debug.Log("Not enough gold to complete purchase!");
             return;
         }
 
-        if (!_playerInventoryHolder.PrimaryInventorySystem.CheckInventoryRemaining(_shoppingCart))
-        {
-            return;
-        }
+        int totalScore = 0;
 
+        // Satın alma işlemini gerçekleştir ve skorları hesapla
         foreach (var kvp in _shoppingCart)
         {
             _shopSystem.PurchaseItem(kvp.Key, kvp.Value);
-
-            for (int i = 0; i < kvp.Value; i++)
+            
+            // Correct item'a göre skor hesaplaması
+            if (kvp.Key.IsCorrectItem)
             {
-                _playerInventoryHolder.PrimaryInventorySystem.AddToInventory(kvp.Key, 1);
+                int itemScore = kvp.Key.PointValue * kvp.Value;
+                totalScore += itemScore;
+                Debug.Log($"Gained {itemScore} points from {kvp.Value}x {kvp.Key.DisplayName}");
             }
         }
 
+        // Skoru ScoreManager'a kaydet
+        ScoreManager.Instance.AddPoints(totalScore);
+        Debug.Log($"Total score: {ScoreManager.Instance.CurrentScore}");
+
+        // Para transferi
         _shopSystem.GainGold(_basketTotal);
         _playerInventoryHolder.PrimaryInventorySystem.SpendGold(_basketTotal);
         
-        RefreshDisplay();
+        // Satın alma işlemi tamamlandıktan sonra, sonraki sahneye geç
+        StartCoroutine(LoadNextScene());
     }
 
-    private void SellItems()
+    private IEnumerator LoadNextScene()
     {
-        if (_shopSystem.AvailableGold < _basketTotal)
-        {
-            return;
-        }
-
-        foreach (var kvp  in _shoppingCart )
-        {
-            var price = GetModifiedPrice(kvp.Key, kvp.Value, _shopSystem.SellMarkUp);
-            
-            _shopSystem.SellItem(kvp.Key, kvp.Value,price);
-
-            _playerInventoryHolder.PrimaryInventorySystem.GainGold(price);
-            _playerInventoryHolder.PrimaryInventorySystem.RemoveItemFromInventory(kvp.Key, kvp.Value);
-        }
+        // Geçiş efekti veya bekleme süresi
+        yield return new WaitForSeconds(1.0f);
         
-        RefreshDisplay();
+        // Skoru PlayerPrefs'e kaydedelim böylece sonraki sahnede erişebiliriz
+        PlayerPrefs.SetInt("GameScore", ScoreManager.Instance.CurrentScore);
+        PlayerPrefs.Save();
+        
+        Debug.Log($"Saving score {ScoreManager.Instance.CurrentScore} to PlayerPrefs");
+        
+        // Sonraki sahneye geçiş
+        SceneManager.LoadScene(nextSceneName);
     }
-
 
     private void ClearSlots()
     {
@@ -143,29 +154,19 @@ public class ShopKeeperDisplay : MonoBehaviour
         {
             Destroy(item.gameObject);
         }
-
-        
     }
-    private void DisplayShopInventory()
+    
+    // Oyuncunun topladığı öğeleri göster
+    private void DisplayPlayerCollectedItems()
     {
-        foreach (var item in _shopSystem.ShopInventory)
-        {
-            if (item.ItemData == null) { continue; ; }
-
-            var shopSlot = Instantiate(_shopSlotPrefab, _itemListContentPanel.transform);
-            shopSlot.Init(item,_shopSystem.BuyMarkUp);
-        }
-    }
-
-    private void DisplayPlayerInventory()
-    {
+        // Oyuncunun topladığı öğeleri göster
         foreach (var item in _playerInventoryHolder.PrimaryInventorySystem.GetAllItemsHeld())
         {
             var tempSlot = new ShopSlot();
-            tempSlot.AssignItem(item.Key,item.Value);
+            tempSlot.AssignItem(item.Key, item.Value);
 
             var shopSlot = Instantiate(_shopSlotPrefab, _itemListContentPanel.transform);
-            shopSlot.Init(tempSlot,_shopSystem.SellMarkUp);
+            shopSlot.Init(tempSlot, _shopSystem.BuyMarkUp);
         }
     }
     
@@ -219,13 +220,11 @@ public class ShopKeeperDisplay : MonoBehaviour
         UpdateItemPreview(shopSlotUI);
         var price = GetModifiedPrice(data, 1, shopSlotUI.MarkUp);
        
-
         if (_shoppingCart.ContainsKey(data))
         {
             _shoppingCart[data]++;
             var newString = $"{data.DisplayName} ({price}G) x{_shoppingCart[data]}";
             _shoppingCartUI[data].SetItemText(newString);
-           
         }
         else
         {
@@ -248,19 +247,10 @@ public class ShopKeeperDisplay : MonoBehaviour
         CheckCartVsAvailableGold();
     }
 
-    
     private void CheckCartVsAvailableGold()
     {
-        var goldToCheck = _isSelling ? _shopSystem.AvailableGold : _playerInventoryHolder.PrimaryInventorySystem.Gold;
+        var goldToCheck = _playerInventoryHolder.PrimaryInventorySystem.Gold;
         _basketTotalText.color = _basketTotal > goldToCheck ? Color.red : Color.green;
-
-        if (_isSelling || _playerInventoryHolder.PrimaryInventorySystem.CheckInventoryRemaining(_shoppingCart))
-        {
-            return;
-        }
-
-        _basketTotalText.text = "Not enough room in inventory.";
-        _basketTotalText.color = Color.red;
     }
 
     public static int GetModifiedPrice(InventoryItemData data, int amount, float markUp)
@@ -283,12 +273,4 @@ public class ShopKeeperDisplay : MonoBehaviour
         _isSelling = false;
         RefreshDisplay();
     }
-    
-    public void OnSellTabPressed()
-    {
-        _isSelling = true;
-        RefreshDisplay();
-    }
-
-    
 }
