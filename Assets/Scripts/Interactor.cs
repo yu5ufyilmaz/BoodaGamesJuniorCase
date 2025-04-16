@@ -44,6 +44,8 @@ public class Interactor : MonoBehaviour
         }
     }
     
+    
+    
     void StartInteraction(IInteractable interactable)
     {
         interactable.Interact(this, out bool interactSuccessful);

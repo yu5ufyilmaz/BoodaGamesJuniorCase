@@ -32,17 +32,66 @@ public class MouseItemData : MonoBehaviour
 
    }
 
-   private void Update()
-   {
-      if (AssignedInventorySlot.ItemData != null)
-      {
-         transform.position = Mouse.current.position.ReadValue();
-         if (Mouse.current.leftButton.wasPressedThisFrame && !IsPointerOverUIObject())
-         {
+  private void Update()
+{
+    if (AssignedInventorySlot.ItemData != null)
+    {
+        transform.position = Mouse.current.position.ReadValue();
+        if (Mouse.current.leftButton.wasPressedThisFrame && !IsPointerOverUIObject())
+        {
+            // Create a physical item in the world
+            DropItemToWorld();
+            
+            // Clear the mouse slot
             ClearSlot();
-         }
-      }
-   }
+        }
+    }
+}
+
+private void DropItemToWorld()
+{
+    if (AssignedInventorySlot.ItemData != null)
+    {
+        // Find the player to determine drop position
+        PlayerInventoryHolder player = FindObjectOfType<PlayerInventoryHolder>();
+        if (player != null)
+        {
+            // Determine drop position - in front of the player
+            Vector3 dropPosition = player.transform.position + player.transform.forward * 2f;
+            
+            // Create item pickup
+            GameObject itemPickupPrefab = Resources.Load<GameObject>("Prefabs/ItemPickUp");
+            if (itemPickupPrefab != null)
+            {
+                GameObject newItemPickup = Instantiate(itemPickupPrefab, dropPosition, Quaternion.identity);
+                ItemPickUp pickupComponent = newItemPickup.GetComponent<ItemPickUp>();
+                
+                if (pickupComponent != null)
+                {
+                    // Set the item data
+                    pickupComponent.ItemData = AssignedInventorySlot.ItemData;
+                    
+                    // Add a small upward force for a natural dropping effect
+                    Rigidbody rb = newItemPickup.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        rb.AddForce(Vector3.up * 2f, ForceMode.Impulse);
+                    }
+                    
+                    Debug.Log($"Dropped item: {AssignedInventorySlot.ItemData.DisplayName}");
+                }
+                else
+                {
+                    Debug.LogError("ItemPickUp component not found on the prefab!");
+                }
+            }
+            else
+            {
+                Debug.LogError("ItemPickUp prefab not found in Resources/Prefabs folder!");
+            }
+        }
+    }
+}
 
    public void ClearSlot()
    {

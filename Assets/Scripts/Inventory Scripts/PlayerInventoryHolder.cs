@@ -18,6 +18,8 @@ public class PlayerInventoryHolder : InventoryHolder
     {
         SaveGameManager.data.playerInventory = new InventorySaveData(primaryInventorySystem);
     }
+    
+    
 
     protected override void LoadInventory(SaveData data)
     {

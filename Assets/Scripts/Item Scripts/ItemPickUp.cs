@@ -79,15 +79,24 @@ public class ItemPickUp : MonoBehaviour, IInteractable
             {
                 AudioSource.PlayClipAtPoint(pickupSound.clip, transform.position);
             }
-            
+        
             if (pickupEffect != null)
             {
                 Instantiate(pickupEffect, transform.position, Quaternion.identity);
             }
-            
-            SaveGameManager.data.collectedItems.Add(id);
+        
+            // Check if SaveGameManager.data and collectedItems are not null before adding
+            if (SaveGameManager.data != null && SaveGameManager.data.collectedItems != null)
+            {
+                SaveGameManager.data.collectedItems.Add(id);
+            }
+            else
+            {
+                Debug.LogWarning("SaveGameManager.data or collectedItems is null. Item ID not saved.");
+            }
+        
             interactSuccessful = true;
-            
+        
             // Destroy the object after interaction
             Destroy(this.gameObject);
         }

@@ -33,6 +33,8 @@ public abstract class InventoryDisplay : MonoBehaviour
 
   public void SlotClicked(InventorySlot_UI clickedUISlot)
   {
+    
+    
     bool isAltPressed = Keyboard.current.leftAltKey.isPressed;
     if (clickedUISlot.AssignedInventorySlot.ItemData != null && mouseInventoryItem.AssignedInventorySlot.ItemData == null)
     {
