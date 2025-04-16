@@ -1,40 +1,53 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Interactor : MonoBehaviour
 {
-    public Transform InteractionPoint;
+    public Transform InteractionPoint; // Kameranın transform'u
     public LayerMask InteractionLayer;
-    public float InteractionPointRadius = 1f;
+    public float InteractionDistance = 3f; // Etkileşim mesafesi
     
     public bool IsInteracting { get; private set; }
+    
+    private Camera mainCamera;
+
+    private void Awake()
+    {
+        mainCamera = Camera.main;
+    }
 
     private void Update()
     {
-        var colliders = Physics.OverlapSphere(InteractionPoint.position, InteractionPointRadius, InteractionLayer);
-
-        if (Keyboard.current.eKey.wasPressedThisFrame)
+        // Ekranın ortasından bir ışın gönder
+        Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        
+        // Debug için ışını görselleştir
+        Debug.DrawRay(ray.origin, ray.direction * InteractionDistance, Color.red);
+        
+        // Işının çarptığı nesne varsa ve E tuşuna basılmışsa
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, InteractionDistance, InteractionLayer))
         {
-            for (int i = 0; i < colliders.Length; i++)
+            // Çarpılan nesnenin IInteractable arayüzünü uygulayıp uygulamadığını kontrol et
+            var interactable = hitInfo.collider.GetComponent<IInteractable>();
+            
+            if (interactable != null)
             {
-                var interactable = colliders[i].GetComponent<IInteractable>();
-
-                if (interactable != null)
+                // E tuşuna basılmışsa etkileşime geç
+                if (Keyboard.current.eKey.wasPressedThisFrame)
                 {
                     StartInteraction(interactable);
                 }
             }
         }
-        
     }
+    
     void StartInteraction(IInteractable interactable)
     {
-        interactable.Interact(this,out bool interactSuccesful);
-        IsInteracting = true;
+        interactable.Interact(this, out bool interactSuccessful);
+        IsInteracting = interactSuccessful;
     }
 
     void EndInteraction()

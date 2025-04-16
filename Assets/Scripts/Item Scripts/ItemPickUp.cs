@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(SphereCollider))]
 [RequireComponent(typeof(UniqueID))]
-public class ItemPickUp : MonoBehaviour
+public class ItemPickUp : MonoBehaviour, IInteractable
 {
     public float PickUpRadius = 1f;
     public InventoryItemData ItemData;
@@ -19,6 +20,8 @@ public class ItemPickUp : MonoBehaviour
 
     private string id;
     private GameManager gameManager;
+
+    public UnityAction<IInteractable> OnInteractionComplete { get; set; }
 
     private void Awake()
     {
@@ -49,7 +52,8 @@ public class ItemPickUp : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (SaveGameManager.data.activeItems.ContainsKey(id))
+        if (SaveGameManager.data != null && SaveGameManager.data.activeItems != null && 
+            SaveGameManager.data.activeItems.ContainsKey(id))
         {
             SaveGameManager.data.activeItems.Remove(id);
         }
@@ -57,42 +61,50 @@ public class ItemPickUp : MonoBehaviour
         SaveLoad.OnLoadGame -= LoadGame;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Interact(Interactor interactor, out bool interactSuccessful)
     {
-        var inventory = other.transform.GetComponent<PlayerInventoryHolder>();
+        var inventory = interactor.GetComponent<PlayerInventoryHolder>();
 
         if (!inventory)
         {
-            Debug.LogWarning($"No PlayerInventoryHolder component found on {other.gameObject.name}");
+            Debug.LogWarning($"No PlayerInventoryHolder component found on {interactor.gameObject.name}");
+            interactSuccessful = false;
             return;
         }
 
         if (inventory.AddToInventory(ItemData, 1))
         {
-            // Add score based on item's value when picked up
-            if (gameManager != null)
+            // Play pickup effects if available
+            if (pickupSound != null)
             {
-                // We could add immediate feedback here, but final scoring happens at the end
-                // If you want visual feedback, you can show a floating text
-                
-                // Play pickup effects if available
-                if (pickupSound != null)
-                {
-                    AudioSource.PlayClipAtPoint(pickupSound.clip, transform.position);
-                }
-                
-                if (pickupEffect != null)
-                {
-                    Instantiate(pickupEffect, transform.position, Quaternion.identity);
-                }
+                AudioSource.PlayClipAtPoint(pickupSound.clip, transform.position);
+            }
+            
+            if (pickupEffect != null)
+            {
+                Instantiate(pickupEffect, transform.position, Quaternion.identity);
             }
             
             SaveGameManager.data.collectedItems.Add(id);
+            interactSuccessful = true;
+            
+            // Destroy the object after interaction
             Destroy(this.gameObject);
         }
+        else
+        {
+            interactSuccessful = false;
+        }
     }
-}
 
+    public void EndInteraction()
+    {
+        // ItemPickup için bu metodu uygulamaya gerek yok
+    }
+
+
+
+}
 
 [System.Serializable]
 public struct ItemPickUpSaveData
