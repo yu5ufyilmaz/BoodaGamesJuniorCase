@@ -29,13 +29,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4230072411559222610}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18198983, y: 0.56980664, z: 0.34068367, w: 0.7253516}
+  m_LocalRotation: {x: 0.18198612, y: 0.5698061, z: 0.34068608, w: 0.7253517}
   m_LocalPosition: {x: 18.121511, y: 14.134662, z: 4.285285}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -7.137, y: 73.344, z: 45}
 --- !u!33 &2390340412292442314
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d32e322059a2abe459566964121dce0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: b947eab7-5387-425f-b201-38366fe22d4e
+  _id: dd0a5316-78ec-4835-8e46-25c6cb1abcf3
 --- !u!114 &5129824189606439766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47fbdafb6f6d797408b214b5678a96df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PickUpRadius: 1
+  PickUpRadius: 0.003
   ItemData: {fileID: 11400000, guid: cafde0ebf8f22f247a14aa5754dbedff, type: 2}
   pickupSound: {fileID: 0}
   pickupEffect: {fileID: 0}
