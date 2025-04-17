@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 8
   DisplayName: Radyo
   Description: "D\u0131\u015F d\xFCnyayla ba\u011Flant\u0131 kurar"
-  Icon: {fileID: 21300000, guid: 26572fe97fad82840871b78beea99cb5, type: 3}
+  Icon: {fileID: 21300000, guid: ab4f83fee64976b41b5cab44afad8751, type: 3}
   MaxStackSize: 1
   GoldValue: 120
   IsCorrectItem: 1

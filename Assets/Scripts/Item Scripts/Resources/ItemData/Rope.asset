@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 9
   DisplayName: "\u0130p"
   Description: "\xC7ok ama\xE7l\u0131 ba\u011Flama arac\u0131"
-  Icon: {fileID: 21300000, guid: 26572fe97fad82840871b78beea99cb5, type: 3}
+  Icon: {fileID: 21300000, guid: e1eb0b0b403aa9048be3176b1eabfb52, type: 3}
   MaxStackSize: 2
   GoldValue: 5
   IsCorrectItem: 1

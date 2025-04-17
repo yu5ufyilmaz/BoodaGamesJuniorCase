@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 6
   DisplayName: 'Benzin '
   Description: "Acil yak\u0131t ihtiyac\u0131 i\xE7in"
-  Icon: {fileID: 21300000, guid: 26572fe97fad82840871b78beea99cb5, type: 3}
+  Icon: {fileID: 21300000, guid: 82975bd80d1beda4a80eefa0f83ea1ff, type: 3}
   MaxStackSize: 1
   GoldValue: 20
   IsCorrectItem: 1

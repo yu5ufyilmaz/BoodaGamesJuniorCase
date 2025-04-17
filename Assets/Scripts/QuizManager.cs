@@ -185,7 +185,7 @@ public class QuizManager : MonoBehaviour
     
     private void UpdateScoreText()
     {
-        scoreText.text = $"Score: {currentScore}";
+        scoreText.text =  currentScore.ToString();
     }
     
     private void ResetButtonColors()
@@ -218,6 +218,6 @@ public class QuizManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("GameScore", 0);
         PlayerPrefs.Save();
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("StartScene");
     }
 }

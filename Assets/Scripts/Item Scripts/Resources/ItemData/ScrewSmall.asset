@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 10
   DisplayName: "\xC7ak\u0131"
   Description: "\xC7ok ama\xE7l\u0131 kesme aleti"
-  Icon: {fileID: 21300000, guid: 26572fe97fad82840871b78beea99cb5, type: 3}
+  Icon: {fileID: 21300000, guid: be91437e1f82eb84c8d932d30bd9e707, type: 3}
   MaxStackSize: 2
   GoldValue: 5
   IsCorrectItem: 1

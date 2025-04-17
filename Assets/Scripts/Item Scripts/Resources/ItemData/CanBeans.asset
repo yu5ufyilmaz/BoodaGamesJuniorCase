@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 2
   DisplayName: 'Fasulye Konservesi '
   Description: "H\u0131zl\u0131 protein kayna\u011F\u0131"
-  Icon: {fileID: 21300000, guid: 7779da1beab0cce4abcfa107411ebad1, type: 3}
+  Icon: {fileID: 21300000, guid: 82975bd80d1beda4a80eefa0f83ea1ff, type: 3}
   MaxStackSize: 10
   GoldValue: 15
   IsCorrectItem: 1

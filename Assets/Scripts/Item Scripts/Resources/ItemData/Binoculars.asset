@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 0
   DisplayName: "D\xFCrb\xFCn"
   Description: "Uza\u011F\u0131 yak\u0131n eder"
-  Icon: {fileID: 21300000, guid: 69e7a2446fb927a489238f1fae5fb402, type: 3}
+  Icon: {fileID: 21300000, guid: 43f4dfd8eaa68f1428957483180800e7, type: 3}
   MaxStackSize: 2
   GoldValue: 30
   IsCorrectItem: 1

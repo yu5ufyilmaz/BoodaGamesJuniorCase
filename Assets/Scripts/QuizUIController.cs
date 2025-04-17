@@ -49,7 +49,7 @@ public class QuizUIController : MonoBehaviour
     {
         PlayerPrefs.SetInt("GameScore", 0);
         PlayerPrefs.Save();
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("StartScene");
     }
     
     // Animation effects for correct/incorrect answers

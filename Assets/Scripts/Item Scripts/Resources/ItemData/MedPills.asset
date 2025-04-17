@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 7
   DisplayName: "\u0130la\xE7"
   Description: "Acil tedavi imkan\u0131"
-  Icon: {fileID: 21300000, guid: 26572fe97fad82840871b78beea99cb5, type: 3}
+  Icon: {fileID: 21300000, guid: cabeaabe96d5ce34ab166c205a45d577, type: 3}
   MaxStackSize: 3
   GoldValue: 5
   IsCorrectItem: 1

@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 12
   DisplayName: Su
   Description: "Hayati ya\u015Fam kayna\u011F\u0131"
-  Icon: {fileID: 21300000, guid: 26572fe97fad82840871b78beea99cb5, type: 3}
+  Icon: {fileID: 21300000, guid: 4a8b68bd32e18b74d92897e96559a556, type: 3}
   MaxStackSize: 15
   GoldValue: 2
   IsCorrectItem: 1
