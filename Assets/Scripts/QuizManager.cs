@@ -198,6 +198,8 @@ public class QuizManager : MonoBehaviour
     
     public void RestartQuiz()
     {
+        PlayerPrefs.SetInt("GameScore", 0);
+        PlayerPrefs.Save();
         // Reset quiz state
         currentQuestionIndex = 0;
         quizScore = 0;
@@ -214,7 +216,8 @@ public class QuizManager : MonoBehaviour
     
     public void GoToMainScene()
     {
-        // Can be used to go back to the main game scene
+        PlayerPrefs.SetInt("GameScore", 0);
+        PlayerPrefs.Save();
         SceneManager.LoadScene("Menu");
     }
 }

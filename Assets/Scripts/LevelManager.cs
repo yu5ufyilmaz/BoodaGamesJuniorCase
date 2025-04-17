@@ -7,6 +7,8 @@ public class LevelManager : MonoBehaviour
     
     public void LoadLevel(string levelName)
     {
+        PlayerPrefs.SetInt("GameScore", 0);
+        PlayerPrefs.Save();
         SceneManager.LoadScene(levelName);
     }
     

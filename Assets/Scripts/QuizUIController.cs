@@ -47,6 +47,8 @@ public class QuizUIController : MonoBehaviour
     
     public void QuitToMainMenu()
     {
+        PlayerPrefs.SetInt("GameScore", 0);
+        PlayerPrefs.Save();
         SceneManager.LoadScene("Menu");
     }
     
