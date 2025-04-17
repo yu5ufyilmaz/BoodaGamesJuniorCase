@@ -47,7 +47,7 @@ public class QuizUIController : MonoBehaviour
     
     public void QuitToMainMenu()
     {
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Menu");
     }
     
     // Animation effects for correct/incorrect answers
