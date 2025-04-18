@@ -3540,7 +3540,7 @@ MonoBehaviour:
     pointsForIncorrect: -5
   currentQuestionIndex: 0
   delayBetweenQuestions: 1.5
-  totalQuizTime: 120
+  totalQuizTime: 30
   timerText: {fileID: 1518906325}
   timerSlider: {fileID: 238164224}
   normalTimerColor: {r: 0, g: 1, b: 0, a: 1}
@@ -3569,6 +3569,8 @@ MonoBehaviour:
   defaultButtonColor: {r: 1, g: 1, b: 1, a: 1}
   correctButtonColor: {r: 0, g: 1, b: 0, a: 1}
   incorrectButtonColor: {r: 1, g: 0, b: 0, a: 1}
+  remainingTime: 0
+  isStarted: 0
 --- !u!1 &1489428814
 GameObject:
   m_ObjectHideFlags: 0
@@ -4545,6 +4547,7 @@ MonoBehaviour:
   welcomeScoreText: {fileID: 1641126900}
   startQuizButton: {fileID: 1155024303}
   quitButton: {fileID: 2021285188}
+  quizManager: {fileID: 0}
 --- !u!1 &1750117753
 GameObject:
   m_ObjectHideFlags: 0

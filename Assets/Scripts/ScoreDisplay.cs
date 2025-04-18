@@ -14,7 +14,7 @@ public class ScoreDisplay : MonoBehaviour
     
     private void Start()
     {
-        if (scoreText == null)
+        if (scoreText != null)
         {
             scoreText = GetComponent<TextMeshProUGUI>();
             if (scoreText == null)

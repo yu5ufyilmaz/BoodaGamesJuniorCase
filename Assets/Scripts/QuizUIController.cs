@@ -18,6 +18,8 @@ public class QuizUIController : MonoBehaviour
     [Header("Quiz Navigation")]
     [SerializeField] private Button quitButton;
     
+    public QuizManager quizManager;
+    
     private void Awake()
     {
         // Initial UI setup
@@ -32,7 +34,7 @@ public class QuizUIController : MonoBehaviour
         }
         
         // Set welcome text
-        welcomeScoreText.text = $"Teste hoþgeldiniz!\nGüncel skorun : {initialScore}";
+        welcomeScoreText.text = $"Teste hoï¿½geldiniz!\nGï¿½ncel skorun : {initialScore}";
         
         // Set up button listeners
         startQuizButton.onClick.AddListener(StartQuiz);
@@ -43,6 +45,7 @@ public class QuizUIController : MonoBehaviour
     {
         welcomePanel.SetActive(false);
         quizPanel.SetActive(true);
+        QuizManager.Instance.isStarted = true;
     }
     
     public void QuitToMainMenu()

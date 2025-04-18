@@ -55,12 +55,16 @@ public class QuizManager : MonoBehaviour
     private Image[] buttonImages;
     
     // Timer değişkenleri
-    private float remainingTime;
+    public float remainingTime;
     private bool isTimerRunning = false;
     private Image timerFillImage; // Slider'ın fill image'ı
+    public bool isStarted = false;
+    
+    public static QuizManager Instance;
     
     private void Awake()
     {
+        Instance = this;
         // Initialize button images array
         buttonImages = new Image[answerButtons.Length];
         for (int i = 0; i < answerButtons.Length; i++)
@@ -102,12 +106,14 @@ public class QuizManager : MonoBehaviour
     private void Start()
     {
         // Load the first question
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         LoadQuestion(currentQuestionIndex);
     }
     
     private void Update()
     {
-        if (isTimerRunning)
+        if (isTimerRunning && isStarted == true)
         {
             // Kalan süreyi güncelle
             remainingTime -= Time.deltaTime;
@@ -342,7 +348,7 @@ public class QuizManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("GameScore", 0);
         PlayerPrefs.Save();
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("StartScene");
     }
     
     // Zamanlayıcı ile ilgili yardımcı metodlar
