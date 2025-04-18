@@ -22,9 +22,19 @@ public class QuizQuestionEditor : Editor
     private SerializedProperty correctButtonColor;
     private SerializedProperty incorrectButtonColor;
     
+    private SerializedProperty totalQuizTime;
+    private SerializedProperty timerText;
+    private SerializedProperty timerSlider; // Image yerine Slider
+    private SerializedProperty normalTimerColor;
+    private SerializedProperty warningTimerColor;
+    private SerializedProperty criticalTimerColor;
+    private SerializedProperty warningThreshold;
+    private SerializedProperty criticalThreshold;
+    
     private bool showQuizSettings = true;
     private bool showUIReferences = true;
     private bool showButtonColors = true;
+    private bool showTimerSettings = true; // Timer ayarları için yeni bölüm
 
     private void OnEnable()
     {
@@ -45,6 +55,15 @@ public class QuizQuestionEditor : Editor
         defaultButtonColor = serializedObject.FindProperty("defaultButtonColor");
         correctButtonColor = serializedObject.FindProperty("correctButtonColor");
         incorrectButtonColor = serializedObject.FindProperty("incorrectButtonColor");
+        
+        totalQuizTime = serializedObject.FindProperty("totalQuizTime");
+        timerText = serializedObject.FindProperty("timerText");
+        timerSlider = serializedObject.FindProperty("timerSlider"); // Image yerine Slider
+        normalTimerColor = serializedObject.FindProperty("normalTimerColor");
+        warningTimerColor = serializedObject.FindProperty("warningTimerColor");
+        criticalTimerColor = serializedObject.FindProperty("criticalTimerColor");
+        warningThreshold = serializedObject.FindProperty("warningThreshold");
+        criticalThreshold = serializedObject.FindProperty("criticalThreshold");
     }
 
     public override void OnInspectorGUI()
@@ -149,6 +168,37 @@ public class QuizQuestionEditor : Editor
                 newQuestion.FindPropertyRelative("pointsForCorrect").intValue = 10;
                 newQuestion.FindPropertyRelative("pointsForIncorrect").intValue = -5;
             }
+            
+            EditorGUI.indentLevel--;
+        }
+        
+        // Timer Settings - Yeni bölüm
+        EditorGUILayout.Space(10);
+        showTimerSettings = EditorGUILayout.Foldout(showTimerSettings, "Timer Settings", true);
+        if (showTimerSettings)
+        {
+            EditorGUI.indentLevel++;
+            
+            // Ana timer özellikleri
+            EditorGUILayout.PropertyField(totalQuizTime, new GUIContent("Total Quiz Time (seconds)"));
+            EditorGUILayout.PropertyField(timerText, new GUIContent("Timer Text"));
+            EditorGUILayout.PropertyField(timerSlider, new GUIContent("Timer Slider"));
+            
+            // Timer renkleri
+            EditorGUILayout.Space(5);
+            EditorGUILayout.LabelField("Timer Colors", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(normalTimerColor, new GUIContent("Normal Color"));
+            EditorGUILayout.PropertyField(warningTimerColor, new GUIContent("Warning Color"));
+            EditorGUILayout.PropertyField(criticalTimerColor, new GUIContent("Critical Color"));
+            
+            // Timer eşikleri
+            EditorGUILayout.Space(5);
+            EditorGUILayout.LabelField("Timer Thresholds", EditorStyles.boldLabel);
+            EditorGUILayout.Slider(warningThreshold, 0f, 1f, new GUIContent("Warning Threshold"));
+            EditorGUILayout.Slider(criticalThreshold, 0f, 1f, new GUIContent("Critical Threshold"));
+            
+            // Yardımcı metin
+            EditorGUILayout.HelpBox("Warning Threshold: When timer reaches this percentage, it turns yellow.\nCritical Threshold: When timer reaches this percentage, it turns red.", MessageType.Info);
             
             EditorGUI.indentLevel--;
         }

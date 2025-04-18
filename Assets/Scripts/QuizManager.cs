@@ -21,6 +21,15 @@ public class QuizManager : MonoBehaviour
     [SerializeField] private List<QuizQuestion> questions = new List<QuizQuestion>();
     [SerializeField] private int currentQuestionIndex = 0;
     [SerializeField] private float delayBetweenQuestions = 1.5f;
+    [SerializeField] private float totalQuizTime = 120f; // Quiz için toplam süre (saniye)
+    [SerializeField] private TextMeshProUGUI timerText; // Timer metni
+    [SerializeField] private Slider timerSlider; // Timer için slider
+    [SerializeField] private Color normalTimerColor = Color.green; // Normal renk
+    [SerializeField] private Color warningTimerColor = Color.yellow; // Uyarı rengi
+    [SerializeField] private Color criticalTimerColor = Color.red; // Kritik renk
+    [SerializeField] private float warningThreshold = 0.5f; // Uyarı eşiği
+    [SerializeField] private float criticalThreshold = 0.25f; // Kritik eşik
+    
     
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI questionText;
@@ -44,6 +53,11 @@ public class QuizManager : MonoBehaviour
     private int quizScore = 0;
     private bool canAnswer = true;
     private Image[] buttonImages;
+    
+    // Timer değişkenleri
+    private float remainingTime;
+    private bool isTimerRunning = false;
+    private Image timerFillImage; // Slider'ın fill image'ı
     
     private void Awake()
     {
@@ -72,12 +86,107 @@ public class QuizManager : MonoBehaviour
         
         // Update score display
         UpdateScoreText();
+        
+        // Timer'ı başlat
+        if (timerSlider != null)
+        {
+            timerFillImage = timerSlider.fillRect.GetComponent<Image>();
+        }
+        
+        // Timer'ı başlat
+        remainingTime = totalQuizTime;
+        isTimerRunning = true;
+        UpdateTimerDisplay();
     }
     
     private void Start()
     {
         // Load the first question
         LoadQuestion(currentQuestionIndex);
+    }
+    
+    private void Update()
+    {
+        if (isTimerRunning)
+        {
+            // Kalan süreyi güncelle
+            remainingTime -= Time.deltaTime;
+            
+            // Timer göstergesini güncelle
+            UpdateTimerDisplay();
+            
+            // Süre doldu mu kontrol et
+            if (remainingTime <= 0)
+            {
+                remainingTime = 0;
+                isTimerRunning = false;
+                OnTimerExpired();
+            }
+        }
+    }
+    
+    private void UpdateTimerDisplay()
+    {
+        if (timerText != null)
+        {
+            // Süreyi dakika:saniye formatında göster
+            int minutes = Mathf.FloorToInt(remainingTime / 60);
+            int seconds = Mathf.FloorToInt(remainingTime % 60);
+            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            
+            // Sürenin azalmasına göre renk değiştir
+            float timeRatio = remainingTime / totalQuizTime;
+            
+            if (timeRatio <= criticalThreshold)
+            {
+                timerText.color = criticalTimerColor;
+            }
+            else if (timeRatio <= warningThreshold)
+            {
+                timerText.color = warningTimerColor;
+            }
+            else
+            {
+                timerText.color = normalTimerColor;
+            }
+        }
+        
+        // Opsiyonel: Fill image ile görsel geri bildirim
+        if (timerSlider != null)
+        {
+            timerSlider.value = remainingTime / totalQuizTime;
+            
+            // Fill rengini güncelle
+            if (timerFillImage != null)
+            {
+                if (remainingTime / totalQuizTime <= criticalThreshold)
+                {
+                    timerFillImage.color = criticalTimerColor;
+                }
+                else if (remainingTime / totalQuizTime <= warningThreshold)
+                {
+                    timerFillImage.color = warningTimerColor;
+                }
+                else
+                {
+                    timerFillImage.color = normalTimerColor;
+                }
+            }
+        }
+    }
+    
+    private void OnTimerExpired()
+    {
+        Debug.Log("Süre doldu! Quiz sonlandırılıyor.");
+        
+        // Kullanıcının cevap vermesini engelle
+        canAnswer = false;
+        
+        // Tüm aktif coroutine'leri durdur
+        StopAllCoroutines();
+        
+        // Sonuç ekranını göster
+        ShowResults();
     }
     
     private void LoadQuestion(int index)
@@ -129,7 +238,7 @@ public class QuizManager : MonoBehaviour
         if (isCorrect)
         {
             buttonImages[selectedIndex].color = correctButtonColor;
-            feedbackText.text = "Do�ru!";
+            feedbackText.text = "Correct!";
             feedbackText.color = correctButtonColor;
             quizScore += currentQuestion.pointsForCorrect;
             currentScore += currentQuestion.pointsForCorrect;
@@ -138,7 +247,7 @@ public class QuizManager : MonoBehaviour
         {
             buttonImages[selectedIndex].color = incorrectButtonColor;
             buttonImages[currentQuestion.correctAnswerIndex].color = correctButtonColor;
-            feedbackText.text = "Yanl��!";
+            feedbackText.text = "Incorrect!";
             feedbackText.color = incorrectButtonColor;
             quizScore += currentQuestion.pointsForIncorrect;
             currentScore += currentQuestion.pointsForIncorrect;
@@ -163,6 +272,8 @@ public class QuizManager : MonoBehaviour
         }
         else
         {
+            // Tüm sorular bitti, zamanı durdur
+            isTimerRunning = false;
             ShowResults();
         }
     }
@@ -174,9 +285,17 @@ public class QuizManager : MonoBehaviour
         resultPanel.SetActive(true);
         
         // Update final score texts
-        finalScoreText.text = $"Toplam Skor: {currentScore}";
-        quizScoreText.text = $"Test Skoru: {quizScore}";
-        totalScoreText.text = $"Al��veri� Skoru: {initialScore}";
+        finalScoreText.text = $"Final Score: {currentScore}";
+        quizScoreText.text = $"Quiz Points: {quizScore}";
+        totalScoreText.text = $"Initial Score: {initialScore}";
+        
+        // Sürenin dolup dolmadığını göster
+        if (remainingTime <= 0)
+        {
+            // Opsiyonel: Süre dolduğuna dair ekstra geri bildirim ekleyebilirsiniz
+            feedbackText.text = "Time's up!";
+            feedbackText.color = criticalTimerColor;
+        }
         
         // Save the final score
         PlayerPrefs.SetInt("GameScore", currentScore);
@@ -185,7 +304,7 @@ public class QuizManager : MonoBehaviour
     
     private void UpdateScoreText()
     {
-        scoreText.text =  currentScore.ToString();
+        scoreText.text = $"Score: {currentScore}";
     }
     
     private void ResetButtonColors()
@@ -205,8 +324,13 @@ public class QuizManager : MonoBehaviour
         quizScore = 0;
         currentScore = initialScore;
         
+        // Reset timer
+        remainingTime = totalQuizTime;
+        isTimerRunning = true;
+        
         // Update UI
         UpdateScoreText();
+        UpdateTimerDisplay();
         questionPanel.SetActive(true);
         resultPanel.SetActive(false);
         
@@ -218,6 +342,23 @@ public class QuizManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("GameScore", 0);
         PlayerPrefs.Save();
-        SceneManager.LoadScene("StartScene");
+        SceneManager.LoadScene("Menu");
+    }
+    
+    // Zamanlayıcı ile ilgili yardımcı metodlar
+    public void PauseTimer()
+    {
+        isTimerRunning = false;
+    }
+    
+    public void ResumeTimer()
+    {
+        isTimerRunning = true;
+    }
+    
+    public void AddTime(float secondsToAdd)
+    {
+        remainingTime += secondsToAdd;
+        UpdateTimerDisplay();
     }
 }
