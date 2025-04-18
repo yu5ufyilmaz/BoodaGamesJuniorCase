@@ -3165,7 +3165,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "YEN\u0130DEN OYNA"
+  m_text: "YEN\u0130DEN \xC7\xD6Z"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f874a0be8a45f7f46a5342d49bc43fd0, type: 2}
   m_sharedMaterial: {fileID: 5188415964270300747, guid: f874a0be8a45f7f46a5342d49bc43fd0, type: 2}
