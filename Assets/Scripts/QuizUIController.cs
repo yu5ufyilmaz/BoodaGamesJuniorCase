@@ -32,7 +32,7 @@ public class QuizUIController : MonoBehaviour
         }
         
         // Set welcome text
-        welcomeScoreText.text = $"Welcome to the Quiz!\nYour current score: {initialScore}";
+        welcomeScoreText.text = $"Teste hoþgeldiniz!\nGüncel skorun : {initialScore}";
         
         // Set up button listeners
         startQuizButton.onClick.AddListener(StartQuiz);
