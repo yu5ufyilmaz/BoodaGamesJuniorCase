@@ -34,7 +34,7 @@ public class QuizUIController : MonoBehaviour
         }
         
         // Set welcome text
-        welcomeScoreText.text = $"Teste ho�geldiniz!\nG�ncel skorun : {initialScore}";
+        welcomeScoreText.text = $"Teste hoşgeldiniz!\nGüncel skorun : {initialScore}";
         
         // Set up button listeners
         startQuizButton.onClick.AddListener(StartQuiz);

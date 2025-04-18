@@ -244,7 +244,7 @@ public class QuizManager : MonoBehaviour
         if (isCorrect)
         {
             buttonImages[selectedIndex].color = correctButtonColor;
-            feedbackText.text = "Correct!";
+            feedbackText.text = "Doğru!";
             feedbackText.color = correctButtonColor;
             quizScore += currentQuestion.pointsForCorrect;
             currentScore += currentQuestion.pointsForCorrect;
@@ -253,7 +253,7 @@ public class QuizManager : MonoBehaviour
         {
             buttonImages[selectedIndex].color = incorrectButtonColor;
             buttonImages[currentQuestion.correctAnswerIndex].color = correctButtonColor;
-            feedbackText.text = "Incorrect!";
+            feedbackText.text = "Yanlış!";
             feedbackText.color = incorrectButtonColor;
             quizScore += currentQuestion.pointsForIncorrect;
             currentScore += currentQuestion.pointsForIncorrect;
@@ -291,9 +291,9 @@ public class QuizManager : MonoBehaviour
         resultPanel.SetActive(true);
         
         // Update final score texts
-        finalScoreText.text = $"Final Score: {currentScore}";
-        quizScoreText.text = $"Quiz Points: {quizScore}";
-        totalScoreText.text = $"Initial Score: {initialScore}";
+        finalScoreText.text = $"Toplam Skor: {currentScore}";
+        quizScoreText.text = $"Test Skoru: {quizScore}";
+        totalScoreText.text = $"Alışveriş Skoru: {initialScore}";
         
         // Sürenin dolup dolmadığını göster
         if (remainingTime <= 0)
@@ -310,7 +310,7 @@ public class QuizManager : MonoBehaviour
     
     private void UpdateScoreText()
     {
-        scoreText.text = $"Score: {currentScore}";
+        scoreText.text = $"Skor: {currentScore}";
     }
     
     private void ResetButtonColors()
